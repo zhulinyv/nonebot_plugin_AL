@@ -1,5 +1,3 @@
-from nonebot import require
-require('nonebot_plugin_htmlrender')
 
 from nonebot import on_command
 from nonebot.permission import SUPERUSER
@@ -9,7 +7,11 @@ from nonebot.plugin import PluginMetadata
 from nonebot.adapters.onebot.v11 import (
     Message,
     MessageSegment,
+    Bot,
+    Event,
+    GroupMessageEvent,
 )
+import traceback
 from pathlib import Path
 try:
     import ujson as json
@@ -18,7 +20,7 @@ except:
 
 
 from .bili import jinghao,get_data, get_ship_msg
-from .send_message import blhx
+from .send_message import *
 from .config import ADMIN
 
 logo ="""
@@ -120,67 +122,59 @@ async def _(matcher:Matcher,args:Message = CommandArg()):
         
 # 以下为移植的内容
 on_command(
-    "blhx", 
-    block=True, 
-    priority=50,
-    handlers=[blhx.send_ship_skin_or_info]
-)
-
-on_command(
     "blhx 过场", 
     block=True, 
     priority=10,
-    handlers=[blhx.send_random_gallery]
+    handlers=[send_random_gallery]
 )
-
 on_command(
     "blhx 帮助", 
     block=True, 
     priority=10,
-    handlers=[blhx.send_blhx_help]
+    handlers=[send_blhx_help]
 )
 on_command(
     "blhx 强度榜", 
     block=True, 
     priority=10,
-    handlers=[blhx.send_pve_recommendation]
+    handlers=[send_pve_recommendation]
 )
 on_command(
     "blhx 强制更新", 
     block=True, 
     priority=10,
     permission=SUPERUSER,
-    handlers=[blhx.force_update]
+    handlers=[force_update]
 )
 on_command(
     "blhx 最新活动", 
     block=True, 
     priority=10,
-    handlers=[blhx.get_recently_event]
+    handlers=[get_recently_event]
 )
 on_command(
     "blhx 备注", 
     block=True, 
     priority=10,
     permission=ADMIN,
-    handlers=[blhx.set_nickname]
+    handlers=[set_nickname]
 )
 on_command(
     "blhx 移除备注", 
     block=True, 
     priority=10,
     permission=ADMIN,
-    handlers=[blhx.remove_nickname]
+    handlers=[remove_nickname]
 )
 on_command(
-    "blhx 皮肤", 
-    block=True, 
+    "blhx 查看备注",
+    block=True,
     priority=10,
-    handlers=[blhx.quick_search_skin]
+    handlers=[view_nickname]
 )
-on_command(
-    "blhx 大建", 
-    block=True, 
-    priority=10,
-    handlers=[blhx.building]
-)
+# on_command(
+#     "blhx 大建", 
+#     block=True, 
+#     priority=10,
+#     handlers=[building]
+# )
